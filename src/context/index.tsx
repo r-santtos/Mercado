@@ -6,8 +6,8 @@ import React, {
 } from 'react';
 
 type Context = {
-  api: {};
-  setApi: Function;
+  resultApi: any;
+  setResultApi: any;
 }
 
 type ContextProps = {
@@ -17,12 +17,12 @@ type ContextProps = {
 export const UpdateContext = createContext({} as Context);
 export default function UpdateProvider({ children }: ContextProps) {
 
-  const [api, setApi] = useState({});
+  const [resultApi, setResultApi] = useState([]);
 
   return (
     <UpdateContext.Provider value={{
-      api,
-      setApi
+      resultApi,
+      setResultApi
     }}>
       {children}
     </UpdateContext.Provider>
@@ -31,6 +31,6 @@ export default function UpdateProvider({ children }: ContextProps) {
 
 export function userApi() {
   const context = useContext(UpdateContext);
-  const { api, setApi } = context;
-  return { api, setApi }
+  const { resultApi, setResultApi } = context;
+  return { resultApi, setResultApi }
 }
