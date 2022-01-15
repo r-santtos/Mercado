@@ -6,9 +6,10 @@ import {
   Platform,
   StatusBar,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Fontisto } from '@expo/vector-icons';
 import { userApi } from "../../context";
 
 export default function Brokers() {
@@ -34,8 +35,8 @@ export default function Brokers() {
   const [mercadoBitcoinBuy, setMercadobitcoinBuy] = useState(0);
   const [mercadoBitcoinVariation, setMercadobitcoinVariation] = useState(0);
 
-  useEffect(() => {
-    fetch('https://api.hgbrasil.com/finance?key=568a710a')
+  const callApi = async () => {
+    await fetch('https://api.hgbrasil.com/finance?key=568a710a')
     .then((response) => {
       return response.json();
     })
@@ -64,13 +65,25 @@ export default function Brokers() {
         setLoadingAPI(false);
       }
     });
-  },[])
+  }
+
+  useEffect(() => {callApi()},[])
+
+  const updates = () => {
+    setLoadingAPI(true);
+    callApi();
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.txt, {fontSize: 24}]}>Corretoras</Text>
-        <Text style={[styles.txt, {color: 'gray'}]}>preço do Bitcoin</Text>
+        <View>
+          <Text style={[styles.txt, {fontSize: 24}]}>Corretoras</Text>
+          <Text style={[styles.txt, {color: 'gray'}]}>preço do Bitcoin</Text>
+        </View>
+        <TouchableOpacity style={styles.btn} onPress={() => updates()}>
+          <Fontisto name="arrow-swap" size={24} color="#fff" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView
@@ -368,6 +381,16 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 8,
     paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  btn: {
+    width: 35,
+    height: 35,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   containerBox: {
     flexWrap: 'wrap',
