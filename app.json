@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mercado",
     "slug": "Mercado",
-    "version": "0.0.3",
+    "version": "0.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,8 +20,11 @@
       "supportsTablet": false
     },
     "android": {
-      "package": "rsanttos.manager",
-      "versionCode": 3
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-9749684125060902~2567627824"
+      },
+      "package": "analistacode.financeiro.i18n",
+      "versionCode": 21
     }
   }
 }

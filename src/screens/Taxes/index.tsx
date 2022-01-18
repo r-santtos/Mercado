@@ -1,3 +1,4 @@
+import { AdMobBanner } from "expo-ads-admob";
 import React from "react";
 import {
   StyleSheet,
@@ -25,6 +26,15 @@ export default function Taxes() {
       <View style={styles.header}>
         <Text style={[styles.txt, {fontSize: 24}]}>Taxas</Text>
         <Text style={[styles.txt, {color: 'gray'}]}>rendimento anual</Text>
+      </View>
+
+      {/** ADMOB */}
+      <View style={styles.admob}>
+        <AdMobBanner
+            bannerSize="banner"
+            adUnitID="ca-app-pub-9749684125060902/7464988445"
+            servePersonalizedAds
+          />
       </View>
 
       <ScrollView
@@ -131,6 +141,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 8,
     paddingHorizontal: 8,
+  },
+  admob: {
+    height: 60,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
   },
   containerBox: {
     flexWrap: 'wrap',
