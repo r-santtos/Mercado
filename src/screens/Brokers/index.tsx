@@ -44,7 +44,7 @@ export default function Brokers() {
     callApi();
   }
 
-  useEffect(() => {setTimeout(() => {setStatusBtn(true)},3000)},[])
+  useEffect(() => {setTimeout(() => {setLoadingAPI(false)},3000)},[])
 
   return (
     <View style={styles.container}>
