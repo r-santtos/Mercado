@@ -17,48 +17,16 @@ export default function Brokers() {
   const [loadingAPI, setLoadingAPI] =useState(true);
 
   /** CHAMADA API */
-  const {setResultApi} = userApi();
-  const [dollar, setDollar] = useState(0);
-
-  const [blockchainBuy, setBlockchainBuy] = useState(0);
-  const [blockchainVariation, setBlockchainVariation] = useState(0);
-
-  const [coinbaseBuy, setCoinbaseBuy] = useState(0);
-  const [coinbaseVariation, setCoinbaseVariation] = useState(0);
-
-  const [bitstampBuy, setBitstampBuy] = useState(0);
-  const [bitstampVariation, setBitstampVariation] = useState(0);
-
-  const [foxbitBuy, setFoxbitBuy] = useState(0);
-  const [foxbitVariation, setFoxbitVariation] = useState(0);
-
-  const [mercadoBitcoinBuy, setMercadobitcoinBuy] = useState(0);
-  const [mercadoBitcoinVariation, setMercadobitcoinVariation] = useState(0);
+  const {resultApi, setResultApi} = userApi();
 
   const callApi = async () => {
-    await fetch('https://api.hgbrasil.com/finance?key=568a710a')
+    await fetch('https://api.hgbrasil.com/finance?key=2562ce77')
     .then((response) => {
       return response.json();
     })
     .then(jsonBody => {
       try {
         setResultApi(jsonBody.results);
-        setDollar(jsonBody.results.currencies.USD.buy);
-
-        setBlockchainBuy(jsonBody.results.bitcoin.blockchain_info.buy);
-        setBlockchainVariation(jsonBody.results.bitcoin.blockchain_info.variation);
-
-        setCoinbaseBuy(jsonBody.results.bitcoin.coinbase.last);
-        setCoinbaseVariation(jsonBody.results.bitcoin.coinbase.variation);
-
-        setBitstampBuy(jsonBody.results.bitcoin.bitstamp.buy);
-        setBitstampVariation(jsonBody.results.bitcoin.bitstamp.variation);
-
-        setFoxbitBuy(jsonBody.results.bitcoin.foxbit.last);
-        setFoxbitVariation(jsonBody.results.bitcoin.foxbit.variation);
-
-        setMercadobitcoinBuy(jsonBody.results.bitcoin.mercadobitcoin.buy);
-        setMercadobitcoinVariation(jsonBody.results.bitcoin.mercadobitcoin.variation);
       } catch (error) {
         console.log('API call error')
       } finally {
@@ -67,12 +35,16 @@ export default function Brokers() {
     });
   }
 
-  useEffect(() => {callApi()},[])
-
+  const [statusBtn, setStatusBtn] = useState(true);
   const updates = () => {
+    setStatusBtn(false);
+    setTimeout(() => {setStatusBtn(true)},900000)
+
     setLoadingAPI(true);
     callApi();
   }
+
+  useEffect(() => {setTimeout(() => {setStatusBtn(true)},3000)},[])
 
   return (
     <View style={styles.container}>
@@ -81,9 +53,16 @@ export default function Brokers() {
           <Text style={[styles.txt, {fontSize: 24}]}>Corretoras</Text>
           <Text style={[styles.txt, {color: 'gray'}]}>preço do Bitcoin</Text>
         </View>
-        <TouchableOpacity style={styles.btn} onPress={() => updates()}>
-          <Fontisto name="arrow-swap" size={24} color="#fff" />
-        </TouchableOpacity>
+        {statusBtn == true ?
+          <TouchableOpacity style={styles.btn} onPress={() => updates()}>
+            <Fontisto name="arrow-swap" size={24} color="#fff" />
+          </TouchableOpacity>
+        : 
+          <View style={styles.btn}>
+            <Fontisto name="arrow-swap" size={24} color="gray" />
+          </View>
+        }
+
       </View>
 
       <ScrollView
@@ -99,7 +78,7 @@ export default function Brokers() {
           <View style={styles.box}>
             <View style={styles.title}>
               <Text style={[styles.txt, {color: 'gray'}]}>BTC</Text>
-                {blockchainVariation >= 0 ? (
+                {resultApi.bitcoin.blockchain_info.variation >= 0 ? (
                   <Text style={[styles.txt, {color: '#C6DE41'}]}>
                     {loadingAPI == true ? <ActivityIndicator size="small" color="#C6DE41"/> : (
                       <>
@@ -108,7 +87,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(blockchainVariation / 100)}
+                        }).format(resultApi.bitcoin.blockchain_info.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -121,7 +100,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(blockchainVariation / 100)}
+                        }).format(resultApi.bitcoin.blockchain_info.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -133,14 +112,14 @@ export default function Brokers() {
                 {Intl.NumberFormat('en', { 
                   style: 'currency', 
                   currency: 'USD'
-                }).format(blockchainBuy)}
+                }).format(resultApi.bitcoin.blockchain_info.buy)}
               </Text>
 
               <Text style={[styles.txt, {color: 'gray'}]}>
                 {Intl.NumberFormat('pt-BR', { 
                   style: 'currency', 
                   currency: 'BRL'
-                }).format(blockchainBuy * dollar)}
+                }).format(resultApi.bitcoin.blockchain_info.buy * resultApi.currencies.USD.buy)}
               </Text>
             </View>
 
@@ -152,7 +131,7 @@ export default function Brokers() {
           <View style={styles.box}>
             <View style={styles.title}>
               <Text style={[styles.txt, {color: 'gray'}]}>BTC</Text>
-                {coinbaseVariation >= 0 ? (
+                {resultApi.bitcoin.coinbase.variation >= 0 ? (
                   <Text style={[styles.txt, {color: '#C6DE41'}]}>
                     {loadingAPI == true ? <ActivityIndicator size="small" color="#C6DE41"/> : (
                       <>
@@ -161,7 +140,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(coinbaseVariation / 100)}
+                        }).format(resultApi.bitcoin.coinbase.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -174,7 +153,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(coinbaseVariation / 100)}
+                        }).format(resultApi.bitcoin.coinbase.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -186,14 +165,14 @@ export default function Brokers() {
                 {Intl.NumberFormat('en', { 
                   style: 'currency', 
                   currency: 'USD'
-                }).format(coinbaseBuy)}
+                }).format(resultApi.bitcoin.coinbase.last)}
               </Text>
 
               <Text style={[styles.txt, {color: 'gray'}]}>
                 {Intl.NumberFormat('pt-BR', { 
                   style: 'currency', 
                   currency: 'BRL'
-                }).format(coinbaseBuy * dollar)}
+                }).format(resultApi.bitcoin.coinbase.last * resultApi.currencies.USD.buy)}
               </Text>
             </View>
 
@@ -205,7 +184,7 @@ export default function Brokers() {
           <View style={styles.box}>
             <View style={styles.title}>
               <Text style={[styles.txt, {color: 'gray'}]}>BTC</Text>
-                {bitstampVariation >= 0 ? (
+                {resultApi.bitcoin.bitstamp.variation >= 0 ? (
                   <Text style={[styles.txt, {color: '#C6DE41'}]}>
                     {loadingAPI == true ? <ActivityIndicator size="small" color="#C6DE41"/> : (
                       <>
@@ -214,7 +193,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(bitstampVariation / 100)}
+                        }).format(resultApi.bitcoin.bitstamp.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -227,7 +206,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(bitstampVariation / 100)}
+                        }).format(resultApi.bitcoin.bitstamp.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -239,14 +218,14 @@ export default function Brokers() {
                 {Intl.NumberFormat('en', { 
                   style: 'currency', 
                   currency: 'USD'
-                }).format(bitstampBuy)}
+                }).format(resultApi.bitcoin.bitstamp.buy)}
               </Text>
 
               <Text style={[styles.txt, {color: 'gray'}]}>
                 {Intl.NumberFormat('pt-BR', { 
                   style: 'currency', 
                   currency: 'BRL'
-                }).format(bitstampBuy * dollar)}
+                }).format(resultApi.bitcoin.bitstamp.buy * resultApi.currencies.USD.buy)}
               </Text>
             </View>
 
@@ -258,7 +237,7 @@ export default function Brokers() {
           <View style={styles.box}>
             <View style={styles.title}>
               <Text style={[styles.txt, {color: 'gray'}]}>BTC</Text>
-                {foxbitVariation >= 0 ? (
+                {resultApi.bitcoin.foxbit.variation >= 0 ? (
                   <Text style={[styles.txt, {color: '#C6DE41'}]}>
                     {loadingAPI == true ? <ActivityIndicator size="small" color="#C6DE41"/> : (
                       <>
@@ -267,7 +246,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(foxbitVariation / 100)}
+                        }).format(resultApi.bitcoin.foxbit.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -280,7 +259,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(foxbitVariation / 100)}
+                        }).format(resultApi.bitcoin.foxbit.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -292,14 +271,14 @@ export default function Brokers() {
                 {Intl.NumberFormat('en', { 
                   style: 'currency', 
                   currency: 'USD'
-                }).format(foxbitBuy)}
+                }).format(resultApi.bitcoin.foxbit.last)}
               </Text>
 
               <Text style={[styles.txt, {color: 'gray'}]}>
                 {Intl.NumberFormat('pt-BR', { 
                   style: 'currency', 
                   currency: 'BRL'
-                }).format(foxbitBuy * dollar)}
+                }).format(resultApi.bitcoin.foxbit.last * resultApi.currencies.USD.buy)}
               </Text>
             </View>
 
@@ -311,7 +290,7 @@ export default function Brokers() {
           <View style={styles.box}>
             <View style={styles.title}>
               <Text style={[styles.txt, {color: 'gray'}]}>BTC</Text>
-                {mercadoBitcoinVariation >= 0 ? (
+                {resultApi.bitcoin.mercadobitcoin.variation >= 0 ? (
                   <Text style={[styles.txt, {color: '#C6DE41'}]}>
                     {loadingAPI == true ? <ActivityIndicator size="small" color="#C6DE41"/> : (
                       <>
@@ -320,7 +299,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(mercadoBitcoinVariation / 100)}
+                        }).format(resultApi.bitcoin.mercadobitcoin.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -333,7 +312,7 @@ export default function Brokers() {
                           style: 'percent',
                           currency: 'BRL',
                           maximumFractionDigits: 4
-                        }).format(mercadoBitcoinVariation / 100)}
+                        }).format(resultApi.bitcoin.mercadobitcoin.variation / 100)}
                       </>
                     )}
                   </Text>
@@ -345,14 +324,14 @@ export default function Brokers() {
                 {Intl.NumberFormat('en', { 
                   style: 'currency', 
                   currency: 'USD'
-                }).format(mercadoBitcoinBuy)}
+                }).format(resultApi.bitcoin.mercadobitcoin.buy)}
               </Text>
 
               <Text style={[styles.txt, {color: 'gray'}]}>
                 {Intl.NumberFormat('pt-BR', { 
                   style: 'currency', 
                   currency: 'BRL'
-                }).format(mercadoBitcoinBuy * dollar)}
+                }).format(resultApi.bitcoin.mercadobitcoin.buy * resultApi.currencies.USD.buy)}
               </Text>
             </View>
 
