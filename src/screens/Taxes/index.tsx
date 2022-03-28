@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Platform,
-  StatusBar,
   ScrollView,
 } from 'react-native';
 import { userApi } from "../../context";
@@ -121,7 +119,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#02080F',
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   txt: {
     fontWeight: '700',

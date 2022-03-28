@@ -31,6 +31,7 @@ const Lottie = () => {
       height: '100%',
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: '#02080F'
     }}>
       <LottieView
         style={{
