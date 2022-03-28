@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Platform,
-  StatusBar,
   ScrollView,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
@@ -266,7 +264,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#02080F',
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   txt: {
     fontWeight: '700',

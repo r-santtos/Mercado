@@ -4,7 +4,7 @@ import 'intl/locale-data/jsonp/pt-BR';
 
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Routes from './src/routes';
 import ProvidedContext from './src/context';

@@ -13,7 +13,7 @@ function Routes() {
 
   return (
     <Tab.Navigator
-      initialRouteName="Brokers"
+      initialRouteName="Coins"
       screenOptions={
         {
           "tabBarActiveTintColor": "#C6DE41",
@@ -35,19 +35,7 @@ function Routes() {
           ]
         }
       }
-    >
-      <Tab.Screen
-        name="Brokers"
-        component={Brokers}
-        options={{
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarIcon: ({size, color}) => (
-            <MaterialCommunityIcons name="iobroker" size={size+5} color={color} />
-          )
-        }}
-      />
-    
+    >    
       <Tab.Screen
         name="Coins"
         component={Coins}
@@ -60,6 +48,18 @@ function Routes() {
         }}
       />
 
+      <Tab.Screen
+        name="Brokers"
+        component={Brokers}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({size, color}) => (
+            <MaterialCommunityIcons name="iobroker" size={size+5} color={color} />
+          )
+        }}
+      />
+      
       <Tab.Screen 
         name="Stocks" 
         component={Stocks}

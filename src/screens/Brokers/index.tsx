@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Platform,
-  StatusBar,
   ScrollView,
   ActivityIndicator,
   TouchableOpacity
@@ -17,33 +15,7 @@ export default function Brokers() {
   const [loadingAPI, setLoadingAPI] =useState(true);
 
   /** CHAMADA API */
-  const {resultApi, setResultApi} = userApi();
-
-  const callApi = async () => {
-    await fetch('https://api.hgbrasil.com/finance?key=2562ce77')
-    .then((response) => {
-      return response.json();
-    })
-    .then(jsonBody => {
-      try {
-        setResultApi(jsonBody.results);
-      } catch (error) {
-        console.log('API call error')
-      } finally {
-        setLoadingAPI(false);
-      }
-    });
-  }
-
-  const [statusBtn, setStatusBtn] = useState(true);
-  const updates = () => {
-    setStatusBtn(false);
-    setTimeout(() => {setStatusBtn(true)},900000)
-
-    setLoadingAPI(true);
-    callApi();
-  }
-
+  const {resultApi} = userApi();
   useEffect(() => {setTimeout(() => {setLoadingAPI(false)},3000)},[])
 
   return (
@@ -53,16 +25,6 @@ export default function Brokers() {
           <Text style={[styles.txt, {fontSize: 24}]}>Corretoras</Text>
           <Text style={[styles.txt, {color: 'gray'}]}>preço do Bitcoin</Text>
         </View>
-        {statusBtn == true ?
-          <TouchableOpacity style={styles.btn} onPress={() => updates()}>
-            <Fontisto name="arrow-swap" size={24} color="#fff" />
-          </TouchableOpacity>
-        : 
-          <View style={styles.btn}>
-            <Fontisto name="arrow-swap" size={24} color="gray" />
-          </View>
-        }
-
       </View>
 
       <ScrollView
@@ -350,7 +312,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#02080F',
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   txt: {
     fontWeight: '700',
